@@ -2,59 +2,54 @@ import pprint
 from googleapiclient.discovery import build  # Import the library
 from googleapiclient.errors import HttpError
 
+# api_key = "AIzaSyDA-f7eyKG22-DiVCPjKoRSNVKeMiIc9zY"  # Main key
+# api_key = "AIzaSyDmpFiYFOEq9DTIFA1TzxioRj_VywDTnRI"  # Key 2
+# api_key = "AIzaSyBQ_scyDxrCV4s-KJi0JZZ45k51fNHyaKM"  # Key 3
+api_key = "AIzaSyAJLVJbDhiLPF70W0Y4tjRO66-Wp2DU254"  # Key 4
+cse_id = "012244406082711924886:vauyxgi2hjq"
+# cse_id = "012244406082711924886:zfvjhom3qgs"
+query_service = build("customsearch", "v1", developerKey=api_key)
 
-def google_query(query, api_key, cse_id, start=0, num=10, **kwargs):
+
+def google_query(query, api_key, cse_id, **kwargs):
+    start = 0
+    num = 10
     result_list = []
-    query_service = build("customsearch", "v1", developerKey=api_key)
+    try:
+        # query_service = build("customsearch", "v1", developerKey=api_key)
 
-    # Get only last few
-    if (start + num - 1) >= 100:
-        num = 100 - start
-
-    # Loop until limit is reached
-    while (start + num - 1) < 100:
-        try:
+        while start < 100:
             query_results = query_service.cse().list(q=query,  # Query
                                                      cx=cse_id,  # CSE ID
                                                      start=start,  # Starting result
                                                      num=num,  # Results per page
                                                      **kwargs  # Other options
                                                      ).execute()
+            if 'items' in query_results:
+                result_list.extend([j['link'] for j in query_results['items']])
+            else:
+                return result_list
+            start += 10
 
-            result_list.extend(query_results['items'])
-        except HttpError as e:
-            print(e)
-            return result_list  # Return gathered results
-
-        start = start + num
-
-        # Get only last few
-        if (start + num - 1) >= 100:
-            num = 100 - start
+    except HttpError as e:
+        print(e)
+        return None
 
     return result_list
 
 
 def main():
-    # api_key = "AIzaSyDA-f7eyKG22-DiVCPjKoRSNVKeMiIc9zY" # Main key
-    # api_key = "AIzaSyDmpFiYFOEq9DTIFA1TzxioRj_VywDTnRI" # Key 2
-    api_key = "AIzaSyBQ_scyDxrCV4s-KJi0JZZ45k51fNHyaKM"  # Key 3
-    cse_id = "012244406082711924886:vauyxgi2hjq"
+    i = 0
+    while google_query("Did Miley Cyrus and Liam Hemsworth secretly get married?",
+                       api_key,
+                       cse_id,
+                       ) is not None:
+        i = i + 1
+        print(i)
 
-    my_results_list = []
-    my_results = google_query("Did Miley Cyrus and Liam Hemsworth secretly get married?",
-                              api_key,
-                              cse_id,
-                              start=0,
-                              num=10,
-                              )
-    for result in my_results:
-        my_results_list.append(result['link'])
-
-    pprint.pprint(my_results_list)
-    print(len(my_results_list))
+    # for result in my_results:
+    #     pprint.pprint(result)
 
 
 if __name__ == '__main__':
-
     main()
