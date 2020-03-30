@@ -1,4 +1,3 @@
-google
-google-api-python-client
 requests
 bs4
+pprint
