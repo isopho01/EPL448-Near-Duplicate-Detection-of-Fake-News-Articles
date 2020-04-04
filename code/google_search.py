@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import pprint
+from extract_articles import extract_articles
 
 
 class GoogleSearch:
@@ -32,19 +33,9 @@ class GoogleSearch:
 
 
 def main():
-    queries = ["BREAKING: First NFL Team Declares Bankruptcy Over Kneeling Thugs",
-               "Court Orders Obama To Pay $400 Million In Restitution",
-               "UPDATE: Second Roy Moore Accuser Works For Michelle Obama Right NOW -",
-               "Oscar Pistorius Attempts To Commit Suicide",
-               "Trump Votes For Death Penalty For Being Gay",
-               "Putin says: ‘Pope Francis Is Not A Man Of God’ | Must-See !!",
-               "New York Man Wanted For Infecting 240 Men And Women With HIV!!!",
-               "Saudi Arabia to Behead 6 School Girls for Being With Their Male Friends Without Parents or a Guardian",
-               "Malia Obama Fired From Cushy Internship At Spanish Embassy",
-               "Target to Discontinue Sale of Holy Bible"]
-
     google = GoogleSearch()
-    [pprint.pprint(google.run(j)) for j in queries]
+    res = google.run('UPDATE: Second Roy Moore Accuser Works For Michelle Obama Right NOW -')[0]
+    pprint.pprint(extract_articles(res))
 
 
 if __name__ == '__main__':

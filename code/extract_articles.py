@@ -79,7 +79,6 @@ def extract_articles(url):
         title = article.title
         content = article.text
         json = { 'url': url,'title': title,'content': content }
-        print(json)
         
         
     except:
@@ -88,41 +87,41 @@ def extract_articles(url):
         
         
         
-def read_articles():
-    # now we will open a file for writing 
-    data_file = open('data_file.csv', 'w', encoding='utf-8-sig') 
+# def read_articles():
+#     # now we will open a file for writing 
+#     data_file = open('data_file.csv', 'w', encoding='utf-8-sig') 
       
-    # # create the csv writer object 
-    # csv_writer = csv.writer(data_file)
-    # header = { 'url', 'title', 'content'}
-    # ordered_fieldnames = OrderedDict([('url',None),('title',None),('content',None)])
-    # dw = csv.DictWriter(data_file, delimiter=',', fieldnames=ordered_fieldnames)
-    # dw.writeheader()
-    #csv_writer.writerow(header)
+#     # # create the csv writer object 
+#     # csv_writer = csv.writer(data_file)
+#     # header = { 'url', 'title', 'content'}
+#     # ordered_fieldnames = OrderedDict([('url',None),('title',None),('content',None)])
+#     # dw = csv.DictWriter(data_file, delimiter=',', fieldnames=ordered_fieldnames)
+#     # dw.writeheader()
+#     #csv_writer.writerow(header)
     
-    #read csv
-    news_artcle=''
-    row = ''
-    i = 0
-    col_list = ["news_url"]
-    df = pd.read_csv("gossipcop_fake.csv", usecols=col_list,encoding='utf-8-sig')
-    for url in df["news_url"]:
-         news_artcle=''
-         news_article = extract_articles(url)
-         if news_article is None:
-            archieve_url = get_website_url_from_arhieve(url)
-            if archieve_url is not None:
-                news_article = collect_news_articles(archieve_url)
-         if(news_article != None):
-            print(news_article)
-            y = json.dumps(news_article)
+#     #read csv
+#     news_artcle=''
+#     row = ''
+#     i = 0
+#     col_list = ["news_url"]
+#     df = pd.read_csv("gossipcop_fake.csv", usecols=col_list,encoding='utf-8-sig')
+#     for url in df["news_url"]:
+#          news_artcle=''
+#          news_article = extract_articles(url)
+#          if news_article is None:
+#             archieve_url = get_website_url_from_arhieve(url)
+#             if archieve_url is not None:
+#                 news_article = collect_news_articles(archieve_url)
+#          if(news_article != None):
+#             print(news_article)
+#             y = json.dumps(news_article)
              
-            #dw.writerow(news_article)
+#             #dw.writerow(news_article)
        
-    data_file.close()     
+#     data_file.close()     
          
         
      
-read_articles()       
+# read_articles()       
         
 
