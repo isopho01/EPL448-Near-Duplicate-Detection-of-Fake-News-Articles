@@ -11,28 +11,28 @@ from newspaper import Article
 
 
 
-# def get_web_archieve_results(search_url):
-#     try:
-#         archieve_url = "http://web.archive.org/cdx/search/cdx?url={}&output=json".format(search_url)
+def get_web_archieve_results(search_url):
+    try:
+        archieve_url = "http://web.archive.org/cdx/search/cdx?url={}&output=json".format(search_url)
 
-#         response = requests.get(archieve_url)
-#         response_json = json.loads(response.content)
+        response = requests.get(archieve_url)
+        response_json = json.loads(response.content)
 
-#         response_json = response_json[1:]
+        response_json = response_json[1:]
 
-#         return response_json
+        return response_json
 
-#     except:
-#         return None
+    except:
+        return None
     
-# def get_website_url_from_arhieve(url):
-#     """ Get the url from http://web.archive.org/ for the passed url if exists."""
-#     archieve_results = get_web_archieve_results(url)
-#     if archieve_results:
-#         modified_url = "https://web.archive.org/web/{}/{}".format(archieve_results[0][1], archieve_results[0][2])
-#         return modified_url
-#     else:
-#         return None
+def get_website_url_from_arhieve(url):
+    """ Get the url from http://web.archive.org/ for the passed url if exists."""
+    archieve_results = get_web_archieve_results(url)
+    if archieve_results:
+        modified_url = "https://web.archive.org/web/{}/{}".format(archieve_results[0][1], archieve_results[0][2])
+        return modified_url
+    else:
+        return None
     
     
 def extract_articles(url):
@@ -99,22 +99,22 @@ def extract_articles(url):
 #     # dw.writeheader()
 #     #csv_writer.writerow(header)
     
-#     #read csv
-#     news_artcle=''
-#     row = ''
-#     i = 0
-#     col_list = ["news_url"]
-#     df = pd.read_csv("gossipcop_fake.csv", usecols=col_list,encoding='utf-8-sig')
-#     for url in df["news_url"]:
-#          news_artcle=''
-#          news_article = extract_articles(url)
-#          if news_article is None:
-#             archieve_url = get_website_url_from_arhieve(url)
-#             if archieve_url is not None:
-#                 news_article = collect_news_articles(archieve_url)
-#          if(news_article != None):
-#             print(news_article)
-#             y = json.dumps(news_article)
+#read csv
+# news_artcle=''
+# row = ''
+# i = 0
+# col_list = ["news_url"]
+# df = pd.read_csv("gossipcop_fake.csv", usecols=col_list,encoding='utf-8-sig')
+# for url in df["news_url"]:
+#      news_artcle=''
+#      news_article = extract_articles(url)
+#      if news_article is None:
+#         archieve_url = get_website_url_from_arhieve(url)
+#         if archieve_url is not None:
+#             news_article = extract_articles(archieve_url)
+#      if(news_article != None):
+#         print(news_article)
+#         y = json.dumps(news_article)
              
 #             #dw.writerow(news_article)
        
