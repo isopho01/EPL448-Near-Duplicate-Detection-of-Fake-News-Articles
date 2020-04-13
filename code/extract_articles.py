@@ -7,21 +7,13 @@ import csv
 from collections import OrderedDict
 #from pandas import csv
 from newspaper import Article 
-
-
-
-
 def get_web_archieve_results(search_url):
     try:
         archieve_url = "http://web.archive.org/cdx/search/cdx?url={}&output=json".format(search_url)
-
         response = requests.get(archieve_url)
         response_json = json.loads(response.content)
-
         response_json = response_json[1:]
-
         return response_json
-
     except:
         return None
     
@@ -34,6 +26,7 @@ def get_website_url_from_arhieve(url):
     else:
         return None
 
+    
 def extract_articles(url):
     try:
         if 'http' not in url:
@@ -71,7 +64,6 @@ def extract_articles(url):
             except:
                 logging.exception("Exception in getting data from url {}".format(url))
                 return None
-
         if not article.is_parsed:
             return None
         json = ''
@@ -121,6 +113,4 @@ def extract_articles(url):
          
         
      
-# read_articles()       
-        
-
+# read_articles()      
