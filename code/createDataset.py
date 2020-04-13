@@ -2,6 +2,7 @@ import pprint as pp
 import pandas as pd
 from google_search import GoogleSearch
 from extract_articles import extract_articles
+from extract_articles import get_website_url_from_arhieve
 import json
 import sys
 
@@ -42,10 +43,14 @@ def createDataset(chosen_dataset):
 
         # Do Loop here
         for i in range(433):
-
+            print(str(i))
             # Pick next query
             current = df.iloc[i]
             original_article = extract_articles(current['news_url'])
+            if original_article is None:
+                archieve_url = get_website_url_from_arhieve(current['news_url'])
+                if archieve_url is not None:
+                    original_article = extract_articles(archieve_url)
             # print('Google search for ' + current['title'])
 
             # Run query and get results
@@ -62,10 +67,9 @@ def createDataset(chosen_dataset):
 
             json.dump(new_entry, f, sort_keys=False, indent=2)
             f.write(',\n')
-
-            # Close json
-            f.write('\n]\n}')
-            f.close()
+        # Close json
+        f.write('\n]\n}')
+        f.close()
 
 
 if __name__ == '__main__':
