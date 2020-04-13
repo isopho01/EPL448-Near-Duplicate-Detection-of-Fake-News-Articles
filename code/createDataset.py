@@ -60,7 +60,9 @@ def createDataset(chosen_dataset, n, random_state, skip=0):
 
             # Check url if acceptable
             url_check = current['news_url']
-            if not regex.match(url_check):
+            if(current['news_url'] != current['news_url']):
+                continue
+            if not url_check or not regex.match(url_check):
                 continue
             if 'web.archive.org/web/' in url_check:
                 # Remove http(s?)web.archive.org/web/[0-9]{14}
@@ -70,7 +72,7 @@ def createDataset(chosen_dataset, n, random_state, skip=0):
                 # Remove www.
                 url_check = url_check[(url_check.find('www.') + 4):]
             url_check = ''.join(url_check)
-            if not regex.match(url_check):
+            if not url_check or not regex.match(url_check):
                 continue
 
             # Extract articles from google
@@ -84,7 +86,7 @@ def createDataset(chosen_dataset, n, random_state, skip=0):
                     continue
 
             # Check if content is empty
-            if not original_article['content']:
+            if not original_article or not original_article['content']:
                 continue
 
             # Run query and get results
@@ -113,4 +115,8 @@ if __name__ == '__main__':
     # df = df.sample(n=n, random_state=1234)
     # pp.pprint(df)
 
-    createDataset(0, n, random_state, 0)
+    createDataset(0, n, random_state, 29)
+
+    # Crash Report FML
+    # 29
+    # 89
