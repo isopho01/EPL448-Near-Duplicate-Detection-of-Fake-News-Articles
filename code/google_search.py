@@ -34,8 +34,9 @@ class GoogleSearch:
 
 def main():
     google = GoogleSearch()
-    res = google.run('UPDATE: Second Roy Moore Accuser Works For Michelle Obama Right NOW -')[0]
-    pprint.pprint(extract_articles(res))
+    res = google.run('BREAKING: First NFL Team Declares Bankruptcy Over Kneeling Thugs')
+    pprint.pprint(res)
+    # pprint.pprint(extract_articles(res))
 
 
 if __name__ == '__main__':
