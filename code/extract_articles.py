@@ -34,8 +34,11 @@ def get_website_url_from_arhieve(url):
     else:
         return None
     
-    
+i = 0
 def extract_articles(url):
+    global i
+    print(str(i))
+    i=i+1
     try:
         if 'http' not in url:
             if url[0] == '/':

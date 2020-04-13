@@ -12,7 +12,7 @@ class GoogleSearch:
 
     def run(self, query):
         query = query.replace(' ', '+')
-        url = f"https://google.com/search?q={query}&lr=lang_en&num=100&start=0"
+        url = f"https://google.com/search?q={query}&lr=lang_en&num=5&start=0"
 
         headers = {"user-agent": self.USER_AGENT}
         resp = requests.get(url, headers=headers)
