@@ -105,12 +105,12 @@ def createDataset(chosen_dataset, n, random_state, skip=0):
 
 
 if __name__ == '__main__':
-    n = 5
+    n = 432
     random_state = 1234
 
     # dataset = './dataset/politifact_fake.csv'
     # df = pd.read_csv(dataset)
-    # df = df.sample(n=5, random_state=1234)
+    # df = df.sample(n=n, random_state=1234)
     # pp.pprint(df)
 
     createDataset(0, n, random_state, 0)
