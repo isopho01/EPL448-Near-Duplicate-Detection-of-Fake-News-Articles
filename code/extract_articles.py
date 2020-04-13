@@ -3,17 +3,17 @@ import time
 import logging
 import json
 import requests
-import csv 
+import csv
 from collections import OrderedDict
-#from pandas import csv
-from newspaper import Article 
-
+# from pandas import csv
+from newspaper import Article
 
 
 
 def get_web_archieve_results(search_url):
     try:
-        archieve_url = "http://web.archive.org/cdx/search/cdx?url={}&output=json".format(search_url)
+        archieve_url = "http://web.archive.org/cdx/search/cdx?url={}&output=json".format(
+            search_url)
 
         response = requests.get(archieve_url)
         response_json = json.loads(response.content)
@@ -24,38 +24,27 @@ def get_web_archieve_results(search_url):
 
     except:
         return None
-    
+
+
 def get_website_url_from_arhieve(url):
     """ Get the url from http://web.archive.org/ for the passed url if exists."""
     archieve_results = get_web_archieve_results(url)
     if archieve_results:
-        modified_url = "https://web.archive.org/web/{}/{}".format(archieve_results[0][1], archieve_results[0][2])
+        modified_url = "https://web.archive.org/web/{}/{}".format(
+            archieve_results[0][1], archieve_results[0][2])
         return modified_url
     else:
         return None
-    
-i = 0
+
 def extract_articles(url):
-    global i
-    print(str(i))
-    i=i+1
+    json = ''
     try:
         if 'http' not in url:
             if url[0] == '/':
                 url = url[1:]
-            try:
-                article = Article('http://' + url)
-                article.download()
-                time.sleep(2)
-                article.parse()
-                flag = True
-            except:
-                logging.exception("Exception in getting data from url {}".format(url))
-                flag = False
-                pass
-            if flag == False:
+            if 'www' not in url:
                 try:
-                    article = Article('https://' + url)
+                    article = Article('http://www.' + url)
                     article.download()
                     time.sleep(2)
                     article.parse()
@@ -64,6 +53,40 @@ def extract_articles(url):
                     logging.exception("Exception in getting data from url {}".format(url))
                     flag = False
                     pass
+            else:
+                try:
+                    article = Article('http://' + url)
+                    article.download()
+                    time.sleep(2)
+                    article.parse()
+                    flag = True
+                except:
+                    logging.exception("Exception in getting data from url {}".format(url))
+                    flag = False
+                    pass
+            if flag == False:
+                if 'www' not in url:
+                    try:
+                        article = Article('http://www.' + url)
+                        article.download()
+                        time.sleep(2)
+                        article.parse()
+                        flag = True
+                    except:
+                        logging.exception("Exception in getting data from url {}".format(url))
+                        flag = False
+                        pass
+                else:
+                    try:
+                        article = Article('https://' + url)
+                        article.download()
+                        time.sleep(2)
+                        article.parse()
+                        flag = True
+                    except:
+                        logging.exception("Exception in getting data from url {}".format(url))
+                        flag = False
+                        pass
             if flag == False:
                 return None
         else:
@@ -78,17 +101,19 @@ def extract_articles(url):
 
         if not article.is_parsed:
             return None
-        json = ''
+        
         title = article.title
         content = article.text
-        json = { 'url': url,'title': title,'content': content }
-        
-        
+        json = { 'url': url,'title': title,'content': content }  
+        print(json)
     except:
         logging.exception("Exception in fetching article form URL : {}".format(url))
+   # print("***********************")
+    #print(json)
+    #print("***********************")
     return json
-        
-        
+
+
         
 # def read_articles():
 #     # now we will open a file for writing 
@@ -102,7 +127,7 @@ def extract_articles(url):
 #     # dw.writeheader()
 #     #csv_writer.writerow(header)
     
-#read csv
+# read csv
 # news_artcle=''
 # row = ''
 # i = 0
