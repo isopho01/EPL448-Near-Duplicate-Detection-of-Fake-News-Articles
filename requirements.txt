@@ -4,3 +4,11 @@ requests
 bs4
 pprint
 newspaper3k
+pandas
+time
+logging
+json
+requests
+csv
+collections
+snapy
