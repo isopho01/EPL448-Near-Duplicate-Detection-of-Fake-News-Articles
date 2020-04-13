@@ -7,6 +7,8 @@ import sys
 
 
 def createDataset(chosen_dataset):
+    # Set scope variables
+    n = 432
     if chosen_dataset == 0:
         json_path = './dataset/politifact_results.json'
         dataset = './dataset/politifact_fake.csv'
@@ -38,34 +40,33 @@ def createDataset(chosen_dataset):
     with open(json_path, 'a') as f:
         # Read csv and setup Google Client
         df = pd.read_csv(dataset)
+        df = df.sample(n=n, random_state=1234)
         google = GoogleSearch()
 
         # Do Loop here
-        for i in range(433):
+        for i in range(n):
+            print('\033[92m' + 'Currently checking: ', str(i) + '\033[0m')
 
             # Pick next query
             current = df.iloc[i]
             original_article = extract_articles(current['news_url'])
-            # print('Google search for ' + current['title'])
 
             # Run query and get results
             res = google.run(current['title'])
-            # print('Results of length ' + str(len(res)) + ': ')
-            # pp.pprint(res)
 
             # Extract content for one article
             extracted_articles = [extract_articles(i) for i in res]
 
             new_entry = dict({'id': i, 'original_article': original_article,
-                            'extracted_articles': extracted_articles})
+                              'extracted_articles': extracted_articles})
             # pp.pprint(new_entry)
 
             json.dump(new_entry, f, sort_keys=False, indent=2)
             f.write(',\n')
 
-            # Close json
-            f.write('\n]\n}')
-            f.close()
+        # Close json
+        f.write('\n]\n}')
+        f.close()
 
 
 if __name__ == '__main__':
