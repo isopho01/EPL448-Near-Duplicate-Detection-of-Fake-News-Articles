@@ -1,6 +1,5 @@
 nameparser
 nltk
-requests
 bs4
 pprint
 newspaper3k
@@ -11,4 +10,5 @@ json
 requests
 csv
 collections
-snapy
+sys
+re
