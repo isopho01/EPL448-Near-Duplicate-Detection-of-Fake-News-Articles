@@ -22,6 +22,7 @@ def main():
     data = readJsonData('./dataset/politifact_results.json')
     if data.empty:
         sys.exit('File not found')
+    print(data)
 
 
 if __name__ == '__main__':
