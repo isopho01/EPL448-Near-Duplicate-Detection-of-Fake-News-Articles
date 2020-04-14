@@ -110,13 +110,8 @@ if __name__ == '__main__':
     n = 432
     random_state = 1234
 
-    # dataset = './dataset/politifact_fake.csv'
-    # df = pd.read_csv(dataset)
-    # df = df.sample(n=n, random_state=1234)
-    # pp.pprint(df)
+    # createDataset(0, n, random_state, 0)
+    with open('./dataset/politifact_results.json') as f:
+        data = json.load(f)
+        [print(i['original_article']['url']) for i in data['data']]
 
-    createDataset(0, n, random_state, 29)
-
-    # Crash Report FML
-    # 29
-    # 89
