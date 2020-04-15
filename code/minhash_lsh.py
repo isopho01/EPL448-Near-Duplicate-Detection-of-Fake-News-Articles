@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
  
 import argparse
- 
 from snapy import MinHash, LSH
+from main import preprocessing
  
 SEED = 3
  
@@ -123,3 +123,4 @@ def main():
  
 if __name__ == "__main__":
     main()
+    
