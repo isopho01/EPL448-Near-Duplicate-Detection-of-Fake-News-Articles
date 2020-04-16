@@ -6,19 +6,6 @@ from main import readJsonData, preprocessing
 from pprint import pprint as pp
 
 
-# def simhash(contents,labels,t,l):
-#     dictionary = dict(zip(labels, contents))
-#     print(dictionary)
-#     objs = [(str(k), Simhash(get_features(v))) for k, v in dictionary.items()]
-#     print(objs)
-#     index = SimhashIndex(objs, k=9)
-#     temp = [t,l]
-#     d = dict(temp)
-#     #s1 = [(str(k), Simhash(get_features(v))) for k, v in d.items()]
-#     #print (index.get_near_dups(s1))
-#     #index.add('4', s1)
-#     #print (index.get_near_dups(s1))
-
 def get_features(s):
     width = 3
     return [s[i:i + width] for i in range(max(len(s) - width + 1, 1))]
