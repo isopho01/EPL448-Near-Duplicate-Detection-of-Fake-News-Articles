@@ -4,11 +4,14 @@ from simhash import Simhash, SimhashIndex
 import re
 from main import readJsonData, preprocessing
 from pprint import pprint as pp
-
+from nltk.tokenize import word_tokenize
 
 def get_features(s):
-    width = 3
-    return [s[i:i + width] for i in range(max(len(s) - width + 1, 1))]
+    #s = word_tokenize(s)
+    #return [s[i] for i in range(max(len(s), 1))]
+    width = 1
+    s = word_tokenize(s)
+    return [' '.join(s[i:i + width]) for i in range(max(len(s) - width + 1, 1))]
 
 
 def simhash_1(labels, targets, query, query_url):
@@ -18,7 +21,8 @@ def simhash_1(labels, targets, query, query_url):
     #print (index.bucket_size())
     #pp(get_features(query))
     query_simhash = Simhash(get_features(query))
-    pp(str(len(index.get_near_dups(query_simhash))))
+    #pp(str(len(index.get_near_dups(query_simhash))))
+    pp(index.get_near_dups(query_simhash))
 
 def main():
     # Get data
