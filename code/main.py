@@ -33,7 +33,7 @@ def preprocessing(sentence):
 
     # Create models
     # ps = PorterStemmer()
-    lemmatizer = WordNetLemmatizer()
+    # lemmatizer = WordNetLemmatizer()
     stop_words = set(stopwords.words('english'))
 
     # For each word
@@ -42,10 +42,10 @@ def preprocessing(sentence):
         if not words[i] in stop_words:  # Stop Words
             word = words[i]
             # word = ps.stem(word)    # Stemming
-            word = lemmatizer.lemmatize(word)   # Lemmatize
+            # word = lemmatizer.lemmatize(word)   # Lemmatize
             content.append(word)
 
-    return ' '.join(content)
+    return content
 
 
 def main():
