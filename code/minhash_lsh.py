@@ -1,7 +1,6 @@
 from snapy import MinHash, LSH
 from main import readJsonData, preprocessing
 from pprint import pprint as pp
-import nltk
 
 SEED = 3
 
@@ -32,16 +31,6 @@ def find_near_duplicate(query, targets, labels, min_jaccard_value, no_of_bands, 
 
 
 def main():
-    # Download resources
-    try:
-        nltk.data.find('wordnet')
-    except LookupError:
-        nltk.download('wordnet')
-    try:
-        nltk.data.find('stopwords')
-    except LookupError:
-        nltk.download('stopwords')
-
     # Get data
     data = readJsonData('./dataset/politifact_results.json')
 

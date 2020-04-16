@@ -9,6 +9,16 @@ from nltk.stem import WordNetLemmatizer, PorterStemmer
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 
+# Download resources
+try:
+    nltk.data.find('wordnet')
+except LookupError:
+    nltk.download('wordnet')
+try:
+    nltk.data.find('stopwords')
+except LookupError:
+    nltk.download('stopwords')
+
 
 def readJsonData(filePath):
     # data: id    extracted_articles[0-202][0-30(max)]    original_article.title  original_article.content  original_article.url
