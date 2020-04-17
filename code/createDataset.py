@@ -32,7 +32,6 @@ def createDataset(chosen_dataset, n, random_state, skip=0):
         f = open(json_path, "w+")
         for i in range(len(s)):
             f.write(s[i])
-        f.close()
     except IOError:
         # Create json file
         with open(json_path, 'w') as f:

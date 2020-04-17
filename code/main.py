@@ -8,6 +8,7 @@ import re
 from nltk.stem import WordNetLemmatizer, PorterStemmer
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
+import csv
 
 # Download resources
 try:
@@ -56,6 +57,26 @@ def preprocessing(sentence):
             content.append(word)
 
     return content
+
+def appendToDataset(csv_file, dict_data):
+    csv_columns = ['dataset','query','duplicates']
+
+    # Check vsc file
+    try:
+        # Remove closing last two lines from file
+        f = open(csv_file, "r")
+    except IOError:
+        # Create json file
+        with open(csv_file, 'w') as f:
+            f.write(','.join(csv_columns))
+            f.write('\n')
+    finally:
+        f.close()
+
+    with open(csv_file, 'a') as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=csv_columns)
+        for data in dict_data:
+            writer.writerow(data)
 
 
 def main():

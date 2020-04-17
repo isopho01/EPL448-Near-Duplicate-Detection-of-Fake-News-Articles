@@ -1,12 +1,12 @@
 from snapy import MinHash, LSH
-from main import readJsonData, preprocessing
+from main import readJsonData, preprocessing, appendToDataset
 from pprint import pprint as pp
 from sklearn.model_selection import train_test_split
 
 SEED = 3
 
 
-def find_near_duplicate(query, targets, labels, min_jaccard_value, no_of_bands, n_permutations, n_gram, n_gram_type='char'):
+def find_near_duplicate(dataset, query, targets, labels, min_jaccard_value, no_of_bands, n_permutations, n_gram, n_gram_type='char'):
     """Using LSH object finds the near duplicate strings.
 
     Args:
@@ -30,13 +30,16 @@ def find_near_duplicate(query, targets, labels, min_jaccard_value, no_of_bands, 
     # Query to find near duplicates the string in `search`
     closest_results = lsh.query(labels[0], min_jaccard=min_jaccard_value)
 
-    print("QUERY: {}".format(labels[0]))
-    pp(closest_results)
+    # print("QUERY: {}".format(labels[0]))
+    # pp(closest_results)
+
+    return {"dataset": dataset, "query": labels[0], "duplicates": ' '.join(closest_results)}
 
 
 def main():
     # Get data
     data = readJsonData('./dataset/politifact_results.json')
+    dataset = []
 
     # Split for Cross Validation
     x_train, x_test = train_test_split(
@@ -48,6 +51,7 @@ def main():
     n_gram_type = 'term'
     n_permutations = int(100)
     no_of_bands = int(50)
+    checking = 'politifact'
 
     for i in x_test.index:
         # Set query and targets
@@ -82,9 +86,11 @@ def main():
             labels.append(v['url'])
 
         # find near duplicate sequences to `search_string`
-        find_near_duplicate(query, targets, labels,
-                            min_jaccard_value, no_of_bands, n_permutations, n_gram, n_gram_type)
-        print('-'*50)
+        dataset.append(find_near_duplicate(checking, query, targets, labels,
+                            min_jaccard_value, no_of_bands, n_permutations, n_gram, n_gram_type))
+        # print('-'*50)
+
+    appendToDataset("./dataset/lsh_dataset.csv", dataset)
 
 
 if __name__ == "__main__":
