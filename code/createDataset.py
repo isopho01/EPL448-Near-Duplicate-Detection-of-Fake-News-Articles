@@ -59,6 +59,7 @@ def createDataset(chosen_dataset, n, random_state, skip=0):
             current = df.iloc[i]
 
             # Check url if acceptable
+            final_url = current['news_url']
             url_check = current['news_url']
             if(current['news_url'] != current['news_url']):
                 continue
@@ -81,6 +82,7 @@ def createDataset(chosen_dataset, n, random_state, skip=0):
                 archieve_url = get_website_url_from_arhieve(
                     current['news_url'])
                 if archieve_url is not None:
+                    final_url = archieve_url
                     original_article = extract_articles(archieve_url)
                 else:
                     continue
@@ -97,7 +99,7 @@ def createDataset(chosen_dataset, n, random_state, skip=0):
 
             # Build json entry and save to file
             new_entry = dict({'id': str(index_array[i]), 'original_article': {
-                             "url": current['news_url'], "title": current['title'], "content": original_article['content']}, 'extracted_articles': extracted_articles})
+                             "url": final_url, "title": current['title'], "content": original_article['content']}, 'extracted_articles': extracted_articles})
             json.dump(new_entry, f, sort_keys=False, indent=2)
             f.write(',\n')
 
