@@ -34,9 +34,9 @@ def main():
 
     # Set settings
     checking = 'politifact'
-    k = 30
+    k = 3
     random_state = 1234
-    width = 5
+    width = 3
 
     # Split for Cross Validation
     x_train, x_test = train_test_split(

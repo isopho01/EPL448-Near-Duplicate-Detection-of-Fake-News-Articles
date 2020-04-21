@@ -46,8 +46,8 @@ def main():
         data, test_size=0.2, random_state=1234)  # test = 40%, train = 60%
 
     # Set settings
-    min_jaccard_value = float(0.5)
-    n_gram = int(30)
+    min_jaccard_value = None
+    n_gram = int(3)
     n_gram_type = 'term'
     n_permutations = int(100)
     no_of_bands = int(50)
