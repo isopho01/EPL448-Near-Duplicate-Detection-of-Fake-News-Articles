@@ -34,15 +34,15 @@ def main():
 
     # Set settings
     checking = 'politifact'
-    k = 3
+    k = 15
     random_state = 1234
     width = 3
 
     # Split for Cross Validation
-    x_train, x_test = train_test_split(
-        data, test_size=0.2, random_state=random_state)  # test = 40%, train = 60%
+    # x_train, x_test = train_test_split(
+    #     data, test_size=0.2, random_state=random_state)  # test = 40%, train = 60%
 
-    for i in x_test.index:
+    for i in data.index:
         # Set query and targets
         query = ' '.join(preprocessing(data['original_article.content'][i]))
         query_url = data['original_article.url'][i]

@@ -42,8 +42,8 @@ def main():
     dataset = []
 
     # Split for Cross Validation
-    x_train, x_test = train_test_split(
-        data, test_size=0.2, random_state=1234)  # test = 40%, train = 60%
+    # x_train, x_test = train_test_split(
+    #     data, test_size=0.2, random_state=1234)  # test = 40%, train = 60%
 
     # Set settings
     min_jaccard_value = None
@@ -53,7 +53,7 @@ def main():
     no_of_bands = int(50)
     checking = 'politifact'
 
-    for i in x_test.index:
+    for i in data.index:
         # Set query and targets
         preprocessed_query = preprocessing(data['original_article.content'][i])
         string_preprocessed_content = ' '.join(preprocessed_query)
