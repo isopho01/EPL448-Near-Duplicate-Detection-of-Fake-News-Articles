@@ -38,7 +38,7 @@ def find_near_duplicate(dataset, query, targets, labels, min_jaccard_value, no_o
 
 def main():
     # Get data
-    data = readJsonData('./dataset/politifact_results.json')
+    data = readJsonData('./dataset/gossipcop_results.json')
     dataset = []
 
     # Split for Cross Validation
@@ -51,13 +51,12 @@ def main():
     n_gram_type = 'term'
     n_permutations = int(100)
     no_of_bands = int(50)
-    checking = 'politifact'
+    checking = 'gossipcop'
 
     for i in data.index:
         # Set query and targets
         preprocessed_query = preprocessing(data['original_article.content'][i])
         string_preprocessed_content = ' '.join(preprocessed_query)
-
         # Content must be more than n_grams length
         if n_gram_type == 'char' and len(string_preprocessed_content) < n_gram:
             continue
