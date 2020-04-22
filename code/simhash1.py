@@ -1,6 +1,6 @@
 from simhash import Simhash, SimhashIndex
 import re
-from main import readJsonData, preprocessing, appendToDataset
+from main import readJsonData, preprocessing, appendToDataset, appendToFingerprints
 from sklearn.model_selection import train_test_split
 from pprint import pprint as pp
 from nltk.tokenize import word_tokenize
@@ -21,6 +21,9 @@ def simhash_1(labels, targets, query, query_url, dataset, k=2, width=5):
     query_simhash = Simhash(get_features(query, width))
     near_dups = index.get_near_dups(query_simhash)
 
+    # Save fingerprints for future use
+    appendToFingerprints(dataset, './dataset/fingerprints.csv', {"query": str(
+        query_simhash.value), "duplicates": ' '.join([str(obj[1].value) for obj in objs])})
     # print("QUERY: {}".format(query_url))
     # pp(near_dups)
 
@@ -29,11 +32,11 @@ def simhash_1(labels, targets, query, query_url, dataset, k=2, width=5):
 
 def main():
     # Get data
-    data = readJsonData('./dataset/gossipcop_results.json')
+    data = readJsonData('./dataset/politifact_results.json')
     dataset = []
 
     # Set settings
-    checking = 'gossipcop'
+    checking = 'politifact'
     k = 15
     random_state = 1234
     width = 3
@@ -43,6 +46,8 @@ def main():
     #     data, test_size=0.2, random_state=random_state)  # test = 40%, train = 60%
 
     for i in data.index:
+        if i % 250 == 0:
+            print(str(i))
         # Set query and targets
         query = ' '.join(preprocessing(data['original_article.content'][i]))
         query_url = data['original_article.url'][i]
