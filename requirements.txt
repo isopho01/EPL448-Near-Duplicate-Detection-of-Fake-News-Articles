@@ -12,3 +12,6 @@ csv
 collections
 sys
 re
+snapy
+sklearn
+simhash
