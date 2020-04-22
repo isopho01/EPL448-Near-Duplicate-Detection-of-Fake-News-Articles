@@ -29,11 +29,11 @@ def simhash_1(labels, targets, query, query_url, dataset, k=2, width=5):
 
 def main():
     # Get data
-    data = readJsonData('./dataset/politifact_results.json')
+    data = readJsonData('./dataset/gossipcop_results.json')
     dataset = []
 
     # Set settings
-    checking = 'politifact'
+    checking = 'gossipcop'
     k = 15
     random_state = 1234
     width = 3
