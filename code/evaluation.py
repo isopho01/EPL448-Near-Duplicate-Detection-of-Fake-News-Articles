@@ -1,13 +1,19 @@
 import re
 from main import readJsonData
 import pandas as pd
-import pprint as pp
+from pprint import pprint as pp
 from collections import Counter
+import math
+import statistics
+
 
 def count_domains(data):
     domains = Counter(k for k in data)
+    res = []
     for domain, count in domains.most_common():
-        print(domain, count)
+        res.append({'domain': domain, 'count': count})
+    return res
+
 
 def parseUrl(urls):
     hostnames = []
@@ -32,24 +38,54 @@ def parseUrl(urls):
     return count_domains(hostnames)
 
 
-# urls = ["https://web.archive.org/web/20171027105356/http://www.religionmind.com:80/2017/10/saudi-arabia-behead-6-school-girls-for.html",
-# "https://web.archive.org/web/20171027105356/www.religionmind.com:80/2017/10/saudi-arabia-behead-6-school-girls-for.html",
-# "https://web.archive.org/web/20171027105356/religionmind.com:80/2017/10/saudi-arabia-behead-6-school-girls-for.html",
-# "https://web.archive.org/web/20171027105356/http://religionmind.com:80/2017/10/saudi-arabia-behead-6-school-girls-for.html",
-# "https://web.archive.org/web/20171027105356/https://www.religionmind.com:80/2017/10/saudi-arabia-behead-6-school-girls-for.html",
-# "https://web.archive.org/web/20171027105356/https://religionmind.com:80/2017/10/saudi-arabia-behead-6-school-girls-for.html",
-# "http://www.religionmind.com:80/2017/10/saudi-arabia-behead-6-school-girls-for.html",
-# "www.religionmind.com:80/2017/10/saudi-arabia-behead-6-school-girls-for.html",
-# "religionmind.com:80/2017/10/saudi-arabia-behead-6-school-girls-for.html",
-# "http://religionmind.com:80/2017/10/saudi-arabia-behead-6-school-girls-for.html",
-# "https://www.religionmind.com:80/2017/10/saudi-arabia-behead-6-school-girls-for.html",
-# "https://religionmind.com:80/2017/10/saudi-arabia-behead-6-school-girls-for.html"]
-# pp.pprint(parseUrl(urls))
-def main():
-    dataset = './dataset/simhash_dataset.csv'
+def avgDuplicationRate(df):
+    return [len(data.split()) for data in df['duplicates'] if data == data]
+
+
+def checkKnownDomains(domains):
+    known = pd.read_csv('./dataset/fake_news_domain_list.csv')
+    return [domain for domain in domains if known['domain'].str.contains(domain).any()]
+
+
+def checkNotKnownDomains(domains):
+    known = pd.read_csv('./dataset/fake_news_domain_list.csv')
+    return [domain for domain in domains if not known['domain'].str.contains(domain).any()]
+
+
+def getSampleData(dataset):
+    
+
+def main(dataset, dt='None'):
+    print('Algorithm:', dt, 'Dataset:', dataset)
+
+    # Read dataset and remove None
     df = pd.read_csv(dataset)
+    if dt != 'None':
+        df = df.loc[df['dataset'] == dt]
+
+    # Domains
     domains = parseUrl([url for url in [dup for dup in df['duplicates']]])
 
+    # Count known fake domains
+    known = len(checkKnownDomains([domain['domain'] for domain in domains]))
+    unknown = len(checkNotKnownDomains([domain['domain'] for domain in domains]))
+    print('Known Ratio', known / (known + unknown))
+
+    # Duplication Rate
+    dup_rate = avgDuplicationRate(df)
+    print('Mean:', statistics.mean(dup_rate))
+    print('Median:', statistics.median(dup_rate))
+    print('Max:', max(dup_rate))
+
+
+    print('='*30)
 
 if __name__ == "__main__":
-    main()
+    # LSH
+    main('./dataset/lsh_dataset.csv', 'politifact')
+    main('./dataset/lsh_dataset.csv', 'gossipcop')
+    main('./dataset/lsh_dataset.csv')
+    # Simhash
+    main('./dataset/simhash_dataset.csv', 'politifact')
+    main('./dataset/simhash_dataset.csv', 'gossipcop')
+    main('./dataset/simhash_dataset.csv')
