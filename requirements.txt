@@ -18,3 +18,4 @@ simhash
 Counter
 statistics
 math
+matplotlib

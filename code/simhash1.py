@@ -30,7 +30,7 @@ def simhash_1(labels, targets, query, query_url, dataset, k=2, width=5):
     return {"dataset": dataset, "query": query_url, "duplicates": ' '.join(near_dups)}
 
 
-def main():
+def main(check):
     # Get data
     data = readJsonData('./dataset/politifact_results.json')
     dataset = []
@@ -54,15 +54,32 @@ def main():
         targets = []
         labels = []
         for v in data['extracted_articles'][i]:
-            # Content must be more than n_grams length
-            if not v or not v['content'] or not v['title'] or not v['url']:
-                continue
+            # Remove non necessary elements
+            if check == 1:
+                # Content must be more than n_grams length
+                if not v or not v['content'] or not v['title'] or not v['url']:
+                    continue
 
-            # Preprocessing
-            preprocessed_content = preprocessing(v['content'])
-            string_preprocessed_content = ' '.join(preprocessed_content)
-            targets.append(string_preprocessed_content)
-            labels.append(v['url'])
+                # Preprocessing
+                preprocessed_content = preprocessing(v['content'])
+                string_preprocessed_content = ' '.join(preprocessed_content)
+                targets.append(string_preprocessed_content)
+                labels.append(v['url'])
+
+            # Dont remove them
+            else:
+                # Content must be more than n_grams length
+                if not v or not v['content'] or not v['title'] or not v['url']:
+                    targets.append("")
+                    labels.append("Empty" + str(i))
+                    i += 1
+                else:
+                    # Preprocessing
+                    preprocessed_content = preprocessing(v['content'])
+                    string_preprocessed_content = ' '.join(
+                        preprocessed_content)
+                    targets.append(string_preprocessed_content)
+                    labels.append(v['url'])
 
         dataset.append(simhash_1(labels, targets, query,
                                  query_url, checking, k, width))
@@ -72,4 +89,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    main(1)
