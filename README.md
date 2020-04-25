@@ -72,14 +72,14 @@ Team Project for EPL448 Data Mining - Near Duplicate Detection of Fake News Arti
 
 Each of the above CSV files is comma separated file and the arrays items are space seperated.
 
-# Installation all the libraries in requirements.txt using the following command
+# Installation
 Install all the libraries in requirements.txt using the following command:
 ```
 pip install -r requirements.txt
 ```
 
 # References
-The minimalistic version of the politifact_fake.csv and gossipcop_fake.csv datasets are a result of the work done for the FakeNewsNet project here https://github.com/KaiDMML/FakeNewsNet#fakenewsnet.
+The minimalistic version of the politifact_fake.csv and gossipcop_fake.csv datasets are a result of the work done for the FakeNewsNet project here https://github.com/KaiDMML/FakeNewsNet.
 The fake_news_domain_list.csv dataset was provided to us for the purpose of this assingment.
 
 If you use this dataset, please cite the following papers:
