@@ -197,14 +197,14 @@ def main(dataset, dt='None'):
 
 if __name__ == "__main__":
     """ Statistical Analysis """
-    # # LSH
-    # main('./dataset/lsh_dataset.csv', 'politifact')
-    # main('./dataset/lsh_dataset.csv', 'gossipcop')
-    # main('./dataset/lsh_dataset.csv')
-    # # Simhash
-    # main('./dataset/simhash_dataset.csv', 'politifact')
-    # main('./dataset/simhash_dataset.csv', 'gossipcop')
-    # main('./dataset/simhash_dataset.csv')
+    # LSH
+    main('./dataset/lsh_dataset.csv', 'politifact')
+    main('./dataset/lsh_dataset.csv', 'gossipcop')
+    main('./dataset/lsh_dataset.csv')
+    # Simhash
+    main('./dataset/simhash_dataset.csv', 'politifact')
+    main('./dataset/simhash_dataset.csv', 'gossipcop')
+    main('./dataset/simhash_dataset.csv')
 
     """ Collect a sample of the data """
     # getSampleData('./dataset/gossipcop_results.json',

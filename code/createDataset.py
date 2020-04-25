@@ -111,7 +111,7 @@ if __name__ == '__main__':
     n = 432
     random_state = 1234
 
-    # createDataset(0, n, random_state, 0)
+    createDataset(0, n, random_state, 0)
     with open('./dataset/politifact_results.json') as f:
         data = json.load(f)
         [print(i['original_article']['url']) for i in data['data']]
