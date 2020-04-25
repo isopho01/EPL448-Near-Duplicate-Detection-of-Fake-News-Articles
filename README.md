@@ -68,10 +68,10 @@ pip install -r requirements.txt
 ```
 
 # References
-If you use this dataset, please cite the following papers:
-
 The minimalistic version of the politifact_fake.csv and gossipcop_fake.csv datasets are a result of the work done for the FakeNewsNet project here https://github.com/KaiDMML/FakeNewsNet#fakenewsnet.
 The fake_news_domain_list.csv dataset was provided to us for the purpose of this assingment.
+
+If you use this dataset, please cite the following papers:
 
 @article{shu2018fakenewsnet,
   title={FakeNewsNet: A Data Repository with News Content, Social Context and Dynamic Information for Studying Fake News on Social Media},
