@@ -3,157 +3,71 @@ Team Project for EPL448 Data Mining - Near Duplicate Detection of Fake News Arti
 
 # Overview of the datasets used
 * politifact_fake.csv - Samples related to fake news collected from PolitiFact
-'''
-* id - Unique identifider for each news
-* url - Url of the article from web that published that news
-* * title - Title of the news article
-tweet_ids - Tweet ids of tweets sharing the news. This field is list of tweet ids separated by tab.
-'''
+	* id - Unique identifider for each news
+	* url - Url of the article from web that published that news
+	* title - Title of the news article
+	* tweet_ids - Tweet ids of tweets sharing the news. This field is list of tweet ids separated by tab.
 * gossipcop_fake.csv - Samples related to fake news collected from GossipCop
-'''
-* id - Unique identifider for each news
-* url - Url of the article from web that published that news
-* * title - Title of the news article
-tweet_ids - Tweet ids of tweets sharing the news. This field is list of tweet ids separated by tab.
-'''
-* fake_news_domain_list.csv - 
+	* id - Unique identifider for each news
+	* url - Url of the article from web that published that news
+	* title - Title of the news article
+	* tweet_ids - Tweet ids of tweets sharing the news. This field is list of tweet ids separated by tab.
+* fake_news_domain_list.csv - Known fake news domains
+	* domain - Unique fake news domain
+	* flag_description - Category of fake news (e.g. fake, conspiracy, political, etc.)
+	* dataset - Url of the original dataset where this domain was flagged as fake news
+* gossipcop_results.json - Holds the extracted articles for every query in the gossipcop_fake.csv we searched the web for
+	* data - Array with all data
+		* original_article - Object with the original query
+			* url - Url of the original query
+			* title - Title of the original query
+			* content - Content of the original query
+		* extracted_articles - Array with the extracted articles from the web by the original queries title
+			* url - Url of the extracted article
+			* title - Title of the extracted article
+			* content - Content of extracted article
+* politifact_results.json - Holds the extracted articles for every query in the politifact_fake.csv we searched the web for
+	* data - Array with all data
+		* original_article - Object with the original query
+			* url - Url of the original query
+			* title - Title of the original query
+			* content - Content of the original query
+		* extracted_articles - Array with the extracted articles from the web by the original queries title
+			* url - Url of the extracted article
+			* title - Title of the extracted article
+			* content - Content of extracted article
+* lsh_dataset.csv - Holds the results for the gossipcop_results.json and politifact_results.json datasets usint the LSH algorithm to find their near duplicates
+	* dataset - Which dataset the original queery was exctracted from (Politifact/Gossipcop)
+	* query - The original query url
+	* duplicates - The near duplicates urls
+* simhash_dataset.csv - Holds the results for the gossipcop_results.json and politifact_results.json datasets usint the SimHash algorithm to find their near duplicates
+	* dataset - Which dataset the original queery was exctracted from (Politifact/Gossipcop)
+	* query - The original query url
+	* duplicates - The near duplicates urls
+* fingerprints.csv - Fingerprints generated from the gossipcop_results.json and politifact_results.json using the SimHash algorithm
+	* dataset - Which dataset the original queery was exctracted from (Politifact/Gossipcop)
+	* query - The original query url
+	* duplicates - The near duplicates urls
+* sample_manual_checking.json - A sample of the gossipcop_results.json dataset used for human evaluation of the SimHash algorithm
+	* data - Array with all data
+		* original_article - Object with the original query
+			* url - Url of the original query
+			* title - Title of the original query
+			* content - Content of the original query
+		* extracted_articles - Array with the extracted articles from the web by the original queries title
+			* url - Url of the extracted article
+			* title - Title of the extracted article
+			* content - Content of extracted article
+			* dup - False near duplicate (0), True near duplicate (1) or Unknown (2)
 
+Each of the above CSV files is comma separated file and the arrays items are space seperated.
 
-
-
-
-
-
-Each of the above CSV files is comma separated file and have the following columns
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Install all the libraries in requirements.txt using the following command
-
+# Install all the libraries in requirements.txt using the following command
+```
 pip install -r requirements.txt
-Configuration:
-FakeNewsNet contains 2 datasets collected using ground truths from Politifact and Gossipcop.
+```
 
-The config.json can be used to configure and collect only certain parts of the dataset. Following attributes can be configured
-
-num_process - (default: 4) This attribute indicates the number of parallel processes used to collect data.
-
-tweet_keys_file - Provide the number of keys available configured in tweet_keys_file.txt file
-
-data_collection_choice - It is an array of choices of various parts of the dataset. Configure accordingly to download only certain parts of the dataset.
-Available values are
-{"news_source": "politifact", "label": "fake"},{"news_source": "politifact", "label": "real"}, {"news_source": "gossipcop", "label": "fake"},{"news_source": "gossipcop", "label": "real"}
-
-data_features_to_collect - FakeNewsNet has multiple dimensions of data (News + Social). This configuration allows one to download desired dimension of the dataset. This is an array field and can take following values.
-
-news_articles : This option downloads the news articles for the dataset.
-tweets : This option downloads tweets objects posted sharing the news in Twitter. This makes use of Twitter API to download tweets.
-retweets: This option allows to download the retweets of the tweets provided in the dataset.
-user_profile: This option allows to download the user profile information of the users involved in tweets. To download user profiles, tweet objects need to be downloaded first in order to identify users involved in tweets.
-user_timeline_tweets: This option allows to download upto 200 recent tweets from the user timeline. To download user's recent tweets, tweet objects needs to be downloaded first in order to identify users involved in tweets.
-user_followers: This option allows to download the user followers ids of the users involved in tweets. To download user followers ids, tweet objects need to be downloaded first in order to identify users involved in tweets.
-user_following: This option allows to download the user following ids of the users involved in tweets. To download user's following ids, tweet objects needs to be downloaded first in order to identify users involved in tweets.
-Running Code
-Inorder to collect data set fast, code makes user of process parallelism and to synchronize twitter key limitations across mutiple python processes, a lightweight flask application is used as keys management server. Execute the following commands inside code folder,
-
-nohup python -m resource_server.app &> keys_server.out&
-The above command will start the flask server in port 5000 by default.
-
-Configurations should be done before proceeding to the next step !!
-
-Execute the following command to start data collection,
-
-nohup python main.py &> data_collection.out&
-Logs are wittern in the same folder in a file named as data_collection_<timestamp>.log and can be used for debugging purposes.
-
-The dataset will be downloaded in the directory provided in the config.json and progress can be monitored in data_collection.out file.
-
-Dataset Structure
-The downloaded dataset will have the following folder structure,
-
-├── gossipcop
-│   ├── fake
-│   │   ├── gossipcop-1
-│   │	│	├── news content.json
-│   │	│	├── tweets
-│   │	│	│	├── 886941526458347521.json
-│   │	│	│	├── 887096424105627648.json
-│   │	│	│	└── ....		
-│   │	│  	└── retweets
-│   │	│		├── 887096424105627648.json
-│   │	│		├── 887096424105627648.json
-│   │	│		└── ....
-│   │	└── ....			
-│   └── real
-│      ├── gossipcop-1
-│      │	├── news content.json
-│      │	├── tweets
-│      │	└── retweets
-│		└── ....		
-├── politifact
-│   ├── fake
-│   │   ├── politifact-1
-│   │   │	├── news content.json
-│   │   │	├── tweets
-│   │   │	└── retweets
-│   │	└── ....		
-│   │
-│   └── real
-│      ├── poliifact-2
-│      │	├── news content.json
-│      │	├── tweets
-│      │	└── retweets
-│      └── ....					
-├── user_profiles
-│		├── 374136824.json
-│		├── 937649414600101889.json
-│   		└── ....
-├── user_timeline_tweets
-│		├── 374136824.json
-│		├── 937649414600101889.json
-│	   	└── ....
-└── user_followers
-│		├── 374136824.json
-│		├── 937649414600101889.json
-│	   	└── ....
-└──user_following
-        	├── 374136824.json
-		├── 937649414600101889.json
-	   	└── ....
-News Content
-
-news content.json: This json includes all the meta information of the news articles collected using the provided news source URLs. This is a JSON object with attributes including:
-
-text is the text of the body of the news article.
-images is a list of the URLs of all the images in the news article web page.
-publish date indicate the date that news article is published.
-Social Context
-
-tweets folder: This folder contains all tweets related to the news sample. This contains the tweet objects of the all the tweet ids provided in the tweet_ids attribute of the dataset csv. All the files in this folder are named as <tweet_id>.json . Each <tweet_id>.json file is a JSON file with format mentioned in https://developer.twitter.com/en/docs/tweets/data-dictionary/overview/tweet-object.html.
-
-retweets folder: This folder contains the retweets of the all tweets posted sharing a particular news article. This folder contains files named as <tweet_id>.json and it contains a array of the retweets for a particular tweets. Each object int the retweet array have format mentioned in https://developer.twitter.com/en/docs/tweets/post-and-engage/api-reference/get-statuses-retweets-id.
-
-user_profiles folder: This folder contains all the user profiles of the users posting tweets related to all news articles. This same folder is used for both datasources ( Politifact and GossipCop). It contains files named as <user_id>.json and have JSON formated mentioned in https://developer.twitter.com/en/docs/tweets/data-dictionary/overview/user-object.html
-
-user_timeline_tweets folder: This folder contains files representing the time line of tweets of users posting tweets related to fake and real news. All files in the folder are named as <user_id>.json and have JSON array of upto 200 recent tweets of the users. The files have format mentioned same as https://developer.twitter.com/en/docs/tweets/timelines/api-reference/get-statuses-user_timeline.html.
-
-user_followers folder: This folder contains all the user followers ids of the users posting tweets related to all news articles. This same folder is used for both datasources ( Politifact and GossipCop). It contains files named as <user_id>.json and have JSON data with user_id and followers attributes.
-
-user_following folder: This folder contains all the user following ids of the users posting tweets related to all news articles. This same folder is used for both datasources ( Politifact and GossipCop). It contains files named as <user_id>.json and have JSON data with user_id and following attributes.
-
-References
+# References
 If you use this dataset, please cite the following papers:
 
 The minimalistic version of the politifact_fake.csv and gossipcop_fake.csv datasets are a result of the work done for the FakeNewsNet project here https://github.com/KaiDMML/FakeNewsNet#fakenewsnet.
