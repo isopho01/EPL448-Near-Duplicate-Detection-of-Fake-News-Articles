@@ -156,7 +156,6 @@ def createPrecisionRecallPlot(precision, recall, labels):
     plt.legend()
     savePlot(plt, "precision-recall.jpg")
     plt.show()
-
     plt.close('all')
 
 
@@ -198,48 +197,48 @@ def main(dataset, dt='None'):
 
 if __name__ == "__main__":
     """ Statistical Analysis """
-    # LSH
-    main('./dataset/lsh_dataset.csv', 'politifact')
-    main('./dataset/lsh_dataset.csv', 'gossipcop')
-    main('./dataset/lsh_dataset.csv')
-    # Simhash
-    main('./dataset/simhash_dataset.csv', 'politifact')
-    main('./dataset/simhash_dataset.csv', 'gossipcop')
-    main('./dataset/simhash_dataset.csv')
+    # # LSH
+    # main('./dataset/lsh_dataset.csv', 'politifact')
+    # main('./dataset/lsh_dataset.csv', 'gossipcop')
+    # main('./dataset/lsh_dataset.csv')
+    # # Simhash
+    # main('./dataset/simhash_dataset.csv', 'politifact')
+    # main('./dataset/simhash_dataset.csv', 'gossipcop')
+    # main('./dataset/simhash_dataset.csv')
 
     """ Collect a sample of the data """
     # getSampleData('./dataset/gossipcop_results.json',
     #               './dataset/sample_manual_checking.json')
 
     """ Check k """
-    # precision = []
-    # recall = []
-    # labels = []
-    # for k in range(1, 33):
-    #     labels.append(k)
-    #     y_true = []
-    #     y_pred = []
+    precision = []
+    recall = []
+    labels = []
+    for k in range(1, 33):
+        labels.append(k)
+        y_true = []
+        y_pred = []
 
-    #     data = readJsonData('./dataset/sample_manual_checking.json')
-    #     fingerprints = pd.read_csv('./dataset/fingerprints.csv')
-    #     for index, row in data.iterrows():
-    #         # Get "true" results
-    #         for article in row['extracted_articles']:
-    #             if article['dup'] == 2:
-    #                 y_true.append(0)
-    #             else:
-    #                 y_true.append(article['dup'])
-    #         fing = fingerprints.iloc[index]
-    #         # Get predictions
-    #         y_pred.extend(get_near_dups(int(fing['query']), list(
-    #             map(int, fing['duplicates'].split(' '))), k))
+        data = readJsonData('./dataset/sample_manual_checking.json')
+        fingerprints = pd.read_csv('./dataset/fingerprints.csv')
+        for index, row in data.iterrows():
+            # Get "true" results
+            for article in row['extracted_articles']:
+                if article['dup'] == 2:
+                    y_true.append(0)
+                else:
+                    y_true.append(article['dup'])
+            fing = fingerprints.iloc[index]
+            # Get predictions
+            y_pred.extend(get_near_dups(int(fing['query']), list(
+                map(int, fing['duplicates'].split(' '))), k))
 
-    #         # TODO remove when done testing
-    #         if index == 49:
-    #             break
+            # TODO remove when done testing
+            if index == 49:
+                break
 
-    #     precision.append(precision_score(y_true, y_pred, average='binary'))
-    #     recall.append(recall_score(y_true, y_pred, average='binary'))
+        precision.append(precision_score(y_true, y_pred, average='binary'))
+        recall.append(recall_score(y_true, y_pred, average='binary'))
 
     # createPrecisionRecallCurve(precision, recall, labels)
-    # createPrecisionRecallPlot(precision, recall, labels)
+    createPrecisionRecallPlot(precision, recall, labels)

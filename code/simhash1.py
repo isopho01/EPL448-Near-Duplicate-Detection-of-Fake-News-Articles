@@ -37,7 +37,7 @@ def main(check):
 
     # Set settings
     checking = 'politifact'
-    k = 15
+    k = 13
     random_state = 1234
     width = 3
 
