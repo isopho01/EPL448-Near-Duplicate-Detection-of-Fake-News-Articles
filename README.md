@@ -1,7 +1,17 @@
 # EPL448-Near-Duplicate-Detection-of-Fake-News-Articles
 Team Project for EPL448 Data Mining - Near Duplicate Detection of Fake News Articles 
 
-# Overview of the datasets used
+# Overview
+## Python files
+* createDataset.py - Used to create out json results gossipcop_results.json and politifact_results.json. By running it with your chosen dataset it will append any new information from your dataset to our json dataset by crawling the web to find near duplicate candidates
+* evaluations.py - Calculates some statistical data about our algorithms results, and makes the plots for the Precision and Recall
+* extract_articles.py - Used to extract the appropriate data from eacch article (title, url, content). Called from createDataset.py
+* google_search.py - Used to crawl Google to find similar documents for a given document's title and returns an array of the results. Called from createDataset.py
+* main.py - Holds same general functions used in most of the other files
+* minhash_lsh.py - Implementation of the Minhash algorithm using Locality Sensitive Hashing and saves the results in the lsh_dataset.csv
+* simhash1.py - Implementation of the Simhash algorithm and saves the results in the simhash_dataset.csv
+
+## Datasets
 * politifact_fake.csv - Samples related to fake news collected from PolitiFact
 	* id - Unique identifider for each news
 	* url - Url of the article from web that published that news
@@ -62,7 +72,8 @@ Team Project for EPL448 Data Mining - Near Duplicate Detection of Fake News Arti
 
 Each of the above CSV files is comma separated file and the arrays items are space seperated.
 
-# Install all the libraries in requirements.txt using the following command
+# Installation all the libraries in requirements.txt using the following command
+Install all the libraries in requirements.txt using the following command:
 ```
 pip install -r requirements.txt
 ```
